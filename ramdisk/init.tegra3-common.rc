@@ -254,9 +254,17 @@ on boot
     chown system system /sys/class/leds/button-backlight/button_brightness
     chmod 0664 /sys/class/leds/button-backlight/button_brightness
 
-    # Sweep2wake
+    # HOX Parts
+    chown system system /sys/devices/platform/htc_battery/fast_charge
+    chmod 0664 /sys/devices/platform/htc_battery/fast_charge
     chown system system /sys/android_touch/sweep2wake
     chmod 0664 /sys/android_touch/sweep2wake
+    chown system system /sys/android_touch/s2w_allow_stroke
+    chmod 0664 /sys/android_touch/s2w_allow_stroke
+    chown system system /sys/android_touch/s2w_min_distance
+    chmod 0664 /sys/android_touch/s2w_min_distance
+    chown system system /sys/android_touch/s2w_allow_double_tap
+    chmod 0664 /sys/android_touch/s2w_allow_double_tap
 
     # Adaptive backlight (surfaceflinger Uid: system, Gid: graphics)
     chown system system /sys/devices/tegradc.0/smartdimmer/enable

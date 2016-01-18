@@ -48,7 +48,13 @@
 # Hardware tunables
 /sys/devices/tegradc.0/smartdimmer/enable                u:object_r:sysfs_writable:s0
 /sys/devices/virtual/timed_output/vibrator/dutycycle     u:object_r:sysfs_writable:s0
+
+# HOX Parts
+/sys/devices/platform/htc_battery/fast_charge            u:object_r:sysfs_writable:s0
 /sys/android_touch/sweep2wake                            u:object_r:sysfs_writable:s0
+/sys/android_touch/s2w_allow_stroke                      u:object_r:sysfs_writable:s0
+/sys/android_touch/s2w_min_distance                      u:object_r:sysfs_writable:s0
+/sys/android_touch/s2w_allow_double_tap                  u:object_r:sysfs_writable:s0
 
 # Processor performance settings
 /sys/module/cpu_tegra/parameters/cpu_user_cap            u:object_r:sysfs_devices_system_cpu:s0
