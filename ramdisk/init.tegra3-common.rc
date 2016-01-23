@@ -266,6 +266,11 @@ on boot
     chown system system /sys/android_touch/s2w_allow_double_tap
     chmod 0664 /sys/android_touch/s2w_allow_double_tap
 
+    # ViperFX
+    chmod 0644 /system/etc/audio_effects.conf
+    chmod 0644 /system/vendor/etc/audio_effects.conf
+    chmod 0644 /system/lib/soundfx/libv4a_fx_ics.so
+
     # Adaptive backlight (surfaceflinger Uid: system, Gid: graphics)
     chown system system /sys/devices/tegradc.0/smartdimmer/enable
     chmod 0664 /sys/devices/tegradc.0/smartdimmer/enable
@@ -314,7 +319,7 @@ service setup_fs /system/bin/setup_fs \
     group root
     oneshot
     
- service gsm0710mux /system/bin/gsm0710muxd -s /dev/ttyACM0 -v 5 -n 8 -m basic
+service gsm0710mux /system/bin/gsm0710muxd -s /dev/ttyACM0 -v 5 -n 8 -m basic
     class main
     user radio
     group radio cache inet misc
