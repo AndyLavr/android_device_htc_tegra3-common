@@ -265,6 +265,8 @@ on boot
     chmod 0664 /sys/android_touch/s2w_min_distance
     chown system system /sys/android_touch/s2w_allow_double_tap
     chmod 0664 /sys/android_touch/s2w_allow_double_tap
+    chown system system /sys/android_touch/s2w_double_tap_dead_area
+    chmod 0664 /sys/android_touch/s2w_double_tap_dead_area
 
     # ViperFX
     chmod 0644 /system/etc/audio_effects.conf

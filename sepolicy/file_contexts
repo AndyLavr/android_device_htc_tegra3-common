@@ -55,6 +55,7 @@
 /sys/android_touch/s2w_allow_stroke                      u:object_r:sysfs_writable:s0
 /sys/android_touch/s2w_min_distance                      u:object_r:sysfs_writable:s0
 /sys/android_touch/s2w_allow_double_tap                  u:object_r:sysfs_writable:s0
+/sys/android_touch/s2w_double_tap_dead_area              u:object_r:sysfs_writable:s0
 
 # Processor performance settings
 /sys/module/cpu_tegra/parameters/cpu_user_cap            u:object_r:sysfs_devices_system_cpu:s0
