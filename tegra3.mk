@@ -117,7 +117,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
 
-
 # NFC packages
 PRODUCT_PACKAGES += \
     libnfc \
@@ -125,6 +124,10 @@ PRODUCT_PACKAGES += \
     Nfc \
     Tag \
     com.android.nfc_extras
+
+# ViperFX packages
+PRODUCT_PACKAGES += \
+    viperfx
 
 # Other apps
 PRODUCT_PACKAGES += \
