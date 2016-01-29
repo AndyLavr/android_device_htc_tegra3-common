@@ -50,7 +50,7 @@
 /sys/devices/virtual/timed_output/vibrator/dutycycle     u:object_r:sysfs_writable:s0
 
 # HOX Parts
-/sys/devices/platform/htc_battery/fast_charge            u:object_r:sysfs_writable:s0
+/sys/devices/platform/htc_battery/ultrafast_charge       u:object_r:sysfs_writable:s0
 /sys/android_touch/sweep2wake                            u:object_r:sysfs_writable:s0
 /sys/android_touch/s2w_allow_stroke                      u:object_r:sysfs_writable:s0
 /sys/android_touch/s2w_min_distance                      u:object_r:sysfs_writable:s0

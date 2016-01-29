@@ -255,8 +255,8 @@ on boot
     chmod 0664 /sys/class/leds/button-backlight/button_brightness
 
     # HOX Parts
-    chown system system /sys/devices/platform/htc_battery/fast_charge
-    chmod 0664 /sys/devices/platform/htc_battery/fast_charge
+    chown system system /sys/devices/platform/htc_battery/ultrafast_charge
+    chmod 0664 /sys/devices/platform/htc_battery/ultrafast_charge
     chown system system /sys/android_touch/sweep2wake
     chmod 0664 /sys/android_touch/sweep2wake
     chown system system /sys/android_touch/s2w_allow_stroke
