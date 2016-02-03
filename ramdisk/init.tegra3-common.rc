@@ -272,6 +272,7 @@ on boot
     chmod 0644 /system/etc/audio_effects.conf
     chmod 0644 /system/vendor/etc/audio_effects.conf
     chmod 0644 /system/lib/soundfx/libv4a_fx_ics.so
+    chmod 0644 /system/lib/libV4AJniUtils.so
 
     # Adaptive backlight (surfaceflinger Uid: system, Gid: graphics)
     chown system system /sys/devices/tegradc.0/smartdimmer/enable
