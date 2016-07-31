@@ -102,6 +102,9 @@ BOARD_RIL_CLASS := ../../../device/htc/tegra3-common/ril/
 # Skip droiddoc build to save build time
 BOARD_SKIP_ANDROID_DOC_BUILD := true
 
+# Kernel TOOLCHAIN (AndyLavr)
+# KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin
+
 # SELinux Defines
 BOARD_SEPOLICY_DIRS := \
     device/htc/tegra3-common/sepolicy
