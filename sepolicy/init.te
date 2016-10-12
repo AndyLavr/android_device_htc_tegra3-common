@@ -7,3 +7,8 @@ allow init self:capability {
 # Allow init to create and relabel /dev/ttyACMX0
 file_type_auto_trans(init, device, radio_device)
 allow init radio_device:chr_file relabelto;
+
+#Certain domains needs LD_PRELOAD passed from init
+#allow it for most domain. Do not honor LD_PRELOAD
+#for lmkd
+allow init { domain -lmkd }:process noatsecure;
