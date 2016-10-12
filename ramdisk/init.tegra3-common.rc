@@ -3,25 +3,14 @@ on early-init
     write /sys/class/firmware/timeout 5
 
 on init
-    # See storage config details at http://source.android.com/tech/storage/
-    mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage/emulated 0555 root root
+    export LD_PRELOAD /system/lib/libc_htc_symbols.so /system/lib/libboringssl-compat.so /system/lib/libshim_camera.so /system/lib/libmmcompat.so
+    export LD_SHIM_LIBS /system/lib/liblog.so|libc_htc_symbols.so:/system/lib/hw/gralloc.tegra.so|libc_htc_symbols.so:/system/lib/hw/hwcomposer.tegra.so|libc_htc_symbols.so:/system/lib/hw/camera.vendor.tegra.so|libshim_camera.so:/system/lib/hw/camera.vendor.tegra.so|libshim_skia.so:/system/lib/libicuuc.so|libmmcompat.so
 
-    export EXTERNAL_STORAGE /storage/emulated/legacy
-    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
-    export EMULATED_STORAGE_TARGET /storage/emulated
+    # mount tmpfs tmpfs /storage/emulated mode=0755,uid=1023,gid=1023
 
     # Support legacy paths
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-
-    # USB OTG
-    mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
-    mkdir /storage/usbdisk 0700 root root
-    symlink /storage/usbdisk /mnt/usbdisk
-    symlink /mnt/usbdisk /usbdisk
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 
     # NETWORK: NAT setting
     # To  prevent out of WINDOW ACK from making
@@ -37,15 +26,20 @@ on init
     stop ril-daemon
 
 on fs
+    mount_all /fstab.enrc2b
+
     setprop ro.crypto.umount_sd false
-    setprop ro.crypto.fuse_sdcard true
-    
+
     mkdir /rca 0775 root radio
     mkdir /rfs 0755 radio radio
     mkdir /devlog 0700 root root
+    mkdir /vendor/overlay 0755 root shell
+    mkdir /data/data/android 0755 system system
 
 on post-fs
-    mkdir /data/media 0770 media_rw media_rw
+    rm /system/bin/insmod
+    symlink /system/bin/toolbox /system/bin/insmod
+
     # Create /dev/ttyACMX0 for poweron_modem_fls.sh
     # mknod is not allowed in the rild domain.
     exec /system/bin/mknod /dev/ttyACMX0 c 66 0
@@ -67,8 +61,6 @@ on post-fs
     restorecon_recursive /rfs
 
 on post-fs-data
-    mkdir /data/media 0770 media_rw media_rw
-
     # The camera calibration from the WDM partition is written to
     # /data/factory_main.bin and /data/factory_front.bin by the vendor camera
     # HAL that runs inside the mediaserver process. The process runs as uid
@@ -297,7 +289,7 @@ service htc-ril-daemon /system/bin/rild
 
 on property:ril.start.gsm0710mux=1
     start gsm0710mux
-    
+
  service htcbatt /system/bin/htcbatt
      class main
      oneshot
@@ -321,7 +313,7 @@ service setup_fs /system/bin/setup_fs \
     user root
     group root
     oneshot
-    
+
 service gsm0710mux /system/bin/gsm0710muxd -s /dev/ttyACM0 -v 5 -n 8 -m basic
     class main
     user radio
@@ -342,11 +334,3 @@ service hdmid /system/bin/hdmid
 
 on property:ro.hdmi.enable=true
     start hdmid
-
-# virtual sdcard daemon running as media_rw (1023)
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -t 4 -l /data/media /mnt/shell/emulated
-    class late_start
-
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -t 4 -d /mnt/media_rw/usbdisk /storage/usbdisk
-    class late_start
-    disabled

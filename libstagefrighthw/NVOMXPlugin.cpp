@@ -50,6 +50,7 @@ NVOMXPlugin::NVOMXPlugin()
                     mLibHandle, "OMX_GetRolesOfComponent");
 
         (*mInit)();
+
     }
 }
 
@@ -159,3 +160,4 @@ OMX_ERRORTYPE NVOMXPlugin::getRolesOfComponent(
 }
 
 }  // namespace android
+

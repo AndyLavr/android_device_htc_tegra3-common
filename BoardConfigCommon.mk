@@ -42,6 +42,9 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 # Some proprietary libs need reservedVectorImpl variants
 COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
+# Media
+# TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := false
@@ -53,10 +56,14 @@ COMMON_GLOBAL_CFLAGS += -DHTC_TEGRA_AUDIO
 COMMON_GLOBAL_CFLAGS += -DADD_LEGACY_ACQUIRE_BUFFER_SYMBOL
 
 #Camera
-USE_CAMERA_STUB := false # set to true by vendor
+# set to true by vendor
+USE_CAMERA_STUB := false
 # external/skia: Old SkImageDecoder::DecodeFile symbol.
 # Needed for camera.vendor.tegra.so and its dependencies.
 COMMON_GLOBAL_CFLAGS += -DSK_SUPPORT_LEGACY_DECODEFILE
+COMMON_GLOBAL_CFLAGS += -DSK_SUPPORT_LEGACY_SETCONFIG
+# fix camera '_ZN8SkBitmap9setConfigENS_6ConfigEiii' FC error
+USE_DEVICE_SPECIFIC_CAMERA := true
 
 # OMX
 # frameworks/native/libs/gui: Legacy setPosition symbol for lib libnvwinsys.so
@@ -102,34 +109,27 @@ BOARD_RIL_CLASS := ../../../device/htc/tegra3-common/ril/
 # Skip droiddoc build to save build time
 BOARD_SKIP_ANDROID_DOC_BUILD := true
 
-# Kernel TOOLCHAIN (AndyLavr)
-# KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin
+# After disabling it we no longer need to shim RIL
+# https://github.com/CyanogenMod/android_device_htc_a5-common/commit/33683d75b443aa9485ffb166ac01cf44bbce9e5d
+USE_CLANG_PLATFORM_BUILD := false
 
 # SELinux Defines
-BOARD_SEPOLICY_DIRS := \
+BOARD_SEPOLICY_DIRS += \
     device/htc/tegra3-common/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-        file_contexts \
-        genfs_contexts \
-	property_contexts \
-        bluetooth.te \
-        btmacreader.te \
-        device.te \
-        domain.te \
-        drmserver.te \
-	imc_download.te \
-	init.te \
-        init_shell.te \
-        file.te \
-        gpsd.te \
-        keystore.te \
-        lmkd.te \
-        mediaserver.te \
-	misc.te \
-        rild.te \
-        surfaceflinger.te \
-        system_app.te \
-        system_server.te \
-        ueventd.te \
-        vold.te
+# ART
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-filter=balanced \
+    dalvik.vm.dex2oat-swap=false \
+    dalvik.vm.image-dex2oat-filter=speed
+
+# Dexpreopt
+ifeq ($(USE_DEXPREOPT),true)
+    # Enable dex-preoptimization to speed up first boot sequence
+    ifeq ($(HOST_OS),linux)
+        ifeq ($(WITH_DEXPREOPT),)
+            WITH_DEXPREOPT := true
+            WITH_DEXPREOPT_COMP := true
+        endif
+    endif
+endif
