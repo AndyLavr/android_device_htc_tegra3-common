@@ -31,7 +31,6 @@ on init
     # Wifi: Disable the IPv6 of p2p0 interface
     write /proc/sys/net/ipv6/conf/p2p0/disable_ipv6 1
 
-
 on init
     # We use our own ril-daemon service definition, see htc-ril-daemon
     stop ril-daemon
@@ -39,7 +38,7 @@ on init
 on fs
     setprop ro.crypto.umount_sd false
     setprop ro.crypto.fuse_sdcard true
-    
+
     mkdir /rca 0775 root radio
     mkdir /rfs 0755 radio radio
     mkdir /devlog 0700 root root
@@ -297,7 +296,7 @@ service htc-ril-daemon /system/bin/rild
 
 on property:ril.start.gsm0710mux=1
     start gsm0710mux
-    
+
  service htcbatt /system/bin/htcbatt
      class main
      oneshot
@@ -321,7 +320,7 @@ service setup_fs /system/bin/setup_fs \
     user root
     group root
     oneshot
-    
+
 service gsm0710mux /system/bin/gsm0710muxd -s /dev/ttyACM0 -v 5 -n 8 -m basic
     class main
     user radio
